@@ -9,10 +9,8 @@ const thoughtSchema = new Schema(
       maxlength: 280,
     },
     createdAt: {
-      //@TODO look into how to get date and whether timestamps is correct
-      //date:
-      default: { timestamps: true },
-      //@TODO look into getter method to format timestamp on query
+      type: Date,
+      default: Date.now,
     },
     username: {
       //@TODO check if anything else needs to go here to link with user
@@ -24,6 +22,7 @@ const thoughtSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
+      getters: true,
     },
     id: false,
   }

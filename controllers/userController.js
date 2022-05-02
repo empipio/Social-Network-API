@@ -33,11 +33,7 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No such user exists" })
-          : Thought.findOneAndUpdate(
-              { users: req.params.userId },
-              { $pull: { users: req.params.userId } },
-              { new: true }
-            )
+          : Thought.deleteMany({ username: user.username })
       )
       .then((thought) =>
         !thought
@@ -82,7 +78,7 @@ module.exports = {
   deleteFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $push: { friends: req.params.friendId } },
+      { $pull: { friends: req.params.friendId } },
       { new: true }
     )
       .populate({ path: "friends", select: "-__v" })

@@ -9,12 +9,13 @@ module.exports = {
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
+  //can get user when populate bit commented out
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .populate(
-        { path: "thoughts", select: "-__v" },
-        { path: "friends", select: "-__v" }
-      )
+      // .populate(
+      //   { path: "thoughts", select: "-__v" },
+      //   { path: "friends", select: "-__v" }
+      // )
       .select("-__v")
       .then((user) =>
         !user
@@ -30,10 +31,12 @@ module.exports = {
   },
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No such user exists" })
-          : Thought.deleteMany({ username: user.username })
+      .then(
+        (user) =>
+          !user
+            ? res.status(404).json({ message: "No such user exists" })
+            : Thought.deleteMany({ _id: user.userId })
+        //could also try username: user.username
       )
       .then((thought) =>
         !thought

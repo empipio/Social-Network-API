@@ -22,7 +22,7 @@ module.exports = {
     Thought.create(req.body)
       .then((thought) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { username: req.body.username },
           { $addToSet: { thoughts: thought._id } },
           { new: true }
         );
@@ -47,7 +47,7 @@ module.exports = {
     )
       .then((thought) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { username: req.body.username },
           { $addToSet: { thoughts: thought._id } },
           { new: true }
         );
@@ -64,11 +64,12 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  //how to associate thought with user? No req body being sent?
   deleteThought(req, res) {
     Thought.findOneAndRemove({ _id: req.params.thoughtId })
       .then((thought) => {
         return User.findOneAndUpdate(
-          { _id: req.body.userId },
+          { username: req.body.username },
           { $pull: { thoughts: req.params.thoughtId } },
           { new: true }
         );
@@ -108,8 +109,8 @@ module.exports = {
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reactions: req.body.reactionId } },
-      { new: true, runValidators: true }
+      { $pull: { reactions: req.params.reactionId } },
+      { new: true }
     )
       .populate({ path: "reactions", select: "-__v" })
       .select("-__v")

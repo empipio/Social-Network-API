@@ -2,12 +2,14 @@ const { ObjectId } = require("mongoose").Types;
 const { User, Thought } = require("../models");
 
 module.exports = {
+  // get all thoughts
   getThoughts(req, res) {
     Thought.find({})
       .select("-__v")
       .then((thoughts) => res.json(thoughts))
       .catch((err) => res.status(500).json(err));
   },
+  // get a single thought
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
@@ -18,6 +20,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // add a new thought
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => {
@@ -39,6 +42,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  // update single thought
   updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -64,7 +68,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
-  //how to associate thought with user? No req body being sent?
+  // delete thought
   deleteThought(req, res) {
     Thought.findOneAndRemove({ _id: req.params.thoughtId })
       .then((thought) => {
@@ -86,6 +90,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  // create reaction associated with thought
   createReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -106,6 +111,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  // delete reaction associated with thought
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },

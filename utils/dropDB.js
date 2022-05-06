@@ -1,6 +1,3 @@
-//info for how to seed data in here
-//not really seeds just dropping existing info
-
 const connection = require("../config/connection");
 const { User, Thought } = require("../models");
 

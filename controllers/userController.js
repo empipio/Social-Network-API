@@ -1,21 +1,16 @@
 const { ObjectId } = require("mongoose").Types;
 const { User, Thought } = require("../models");
 
-// @TODO check "path" : friend/friends, thought/thoughts?
-
 module.exports = {
+  // get all users
   getUsers(req, res) {
     User.find()
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
-  //can get user when populate bit commented out
+  // get a single user
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      // .populate(
-      //   { path: "thoughts", select: "-__v" },
-      //   { path: "friends", select: "-__v" }
-      // )
       .select("-__v")
       .then((user) =>
         !user
@@ -24,11 +19,13 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // add a new user
   createUser(req, res) {
     User.create(req.body)
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
+  // delete a single user
   deleteUser(req, res) {
     User.findOneAndRemove({ _id: req.params.userId })
       .then(
@@ -50,6 +47,7 @@ module.exports = {
         res.status(500).json(err);
       });
   },
+  // update a single user
   updateUser(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
@@ -63,13 +61,13 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // add a new friend
   addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $push: { friends: req.params.friendId } },
       { new: true }
     )
-      //.populate({ path: "friends", select: "-__v" })
       .select("-__v")
       .then((user) =>
         !user
@@ -78,6 +76,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  // delete friend
   deleteFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },

@@ -25,5 +25,7 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ```
 
 The walkthrough video is available here:
+
 Part 1: https://youtu.be/-Q2J_o1YgoQ
-Part 2-add and delete friend only: https://youtu.be/dq4cj3swVr0
+
+Part 2 (add and delete friend only): https://youtu.be/dq4cj3swVr0

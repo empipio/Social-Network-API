@@ -73,8 +73,8 @@ module.exports = {
     Thought.findOneAndRemove({ _id: req.params.thoughtId })
       .then((thought) => {
         return User.findOneAndUpdate(
-          { username: req.body.username },
-          { $pull: { thoughts: req.params.thoughtId } },
+          { username: thought.username },
+          { $pull: { thoughts: { $in: [req.params.thoughtId] } } },
           { new: true }
         );
       })
@@ -115,7 +115,7 @@ module.exports = {
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reactions: req.params.reactionId } },
+      { $pull: { reactions: { _id: req.params.reactionId } } },
       { new: true }
     )
       .populate({ path: "reactions", select: "-__v" })

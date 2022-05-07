@@ -14,7 +14,6 @@ const thoughtSchema = new Schema(
       default: Date.now,
     },
     username: {
-      //@TODO check if anything else needs to go here to link with user
       type: String,
       required: true,
     },
